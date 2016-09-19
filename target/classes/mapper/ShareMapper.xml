@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.tedu.cloudnote.dao.ShareDao">
+
+<select id="findLikeTitle" 
+	parameterType="map"
+resultType="com.tedu.cloudnote.entity.Share">
+select * from cn_share
+where cn_share_title like #{keyword}
+limit #{begin},5
+</select>
+
+<insert id="save" 
+parameterType="com.tedu.cloudnote.entity.Share">
+insert into cn_share
+	(cn_share_id,cn_share_title,
+	cn_share_body,cn_note_id,fav_status)
+values (#{cn_share_id},#{cn_share_title},
+	#{cn_share_body},#{cn_note_id},#{fav_status})
+</insert>
+
+<select id="findByShareId" parameterType="string" 
+resultType="com.tedu.cloudnote.entity.Share">
+select * from cn_share where cn_share_id = #{shareId}
+</select>
+
+<update id="updateFavStatus" 
+	parameterType="string">
+update cn_share
+set fav_status='1'
+where cn_share_id=#{shareId}
+</update>
+<update id="favStatus0" parameterType="string">
+update cn_share
+set fav_status='0'
+where cn_note_id=#{noteId}
+</update>
+
+<select id="checkFav" parameterType="string" resultType="string">
+select fav_status from cn_share where cn_share_id = #{shareId}
+</select>
+
+</mapper>
